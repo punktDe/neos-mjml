@@ -41,7 +41,7 @@ class MjmlHelper implements ProtectedContextAwareInterface
         $descriptorspec = [
             0 => ['pipe', 'r'],
             1 => ['pipe', 'w'],
-            2 => ['pipe', 'a']
+            2 => ['pipe', 'w']
         ];
 
         $process = proc_open($this->getMjmlBinaryPath() . ' -i -s', $descriptorspec, $pipes);
@@ -59,7 +59,9 @@ class MjmlHelper implements ProtectedContextAwareInterface
         $status = proc_close($process);
 
         if($status !== 0) {
-           throw new Exception('The mjml process exited with an error: ' . stream_get_contents($pipes[2]), 1519112326);
+            $errorMessage = stream_get_contents($pipes[2]);
+            fclose($pipes[2]);
+            throw new Exception(sprintf('The mjml process exited with an error %s and message "%s": ' , $status, $errorMessage), 1519112326);
         }
 
         return $compiledHtml;
@@ -74,7 +76,7 @@ class MjmlHelper implements ProtectedContextAwareInterface
     {
         $packageResourcePath = $this->packageManager->getPackage('PunktDe.Eel.Mjml')->getResourcesPath();
 
-        $mjmlBinPath = str_replace('{PACKAGEROOT}', $packageResourcePath, $this->mjmlBinPath);
+        $mjmlBinPath = str_replace('{PACKAGERESOURCEROOT}', $packageResourcePath, $this->mjmlBinPath);
 
         if (!is_file($mjmlBinPath)) {
             throw new InvalidConfigurationException(sprintf('The mjml binary in the configured path "%s" was not found', $mjmlBinPath), 1519111452);

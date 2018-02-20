@@ -6,7 +6,5 @@ Neos:
 PunktDe:
   Eel:
     Mjml:
-      # Use the variable {PACKAGEROOT} for an absolute path to this package directory
-      mjmlBinPath: '{PACKAGEROOT}/Resources/Private/Library/node_modules/bin/mjml'
-
-
+      # Use the variable {PACKAGERESOURCEROOT} for an absolute path to this package directory
+      mjmlBinPath: '{PACKAGERESOURCEROOT}Private/Library/node_modules/.bin/mjml'

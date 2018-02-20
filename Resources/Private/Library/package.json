@@ -1,0 +1,11 @@
+{
+  "name": "punktde-mjml",
+  "version": "1.0.0",
+  "description": "MJML Library",
+  "devDependencies": {},
+  "author": "Punkt.de",
+  "license": "MIT",
+  "dependencies": {
+    "mjml": "^3.3.5"
+  }
+}

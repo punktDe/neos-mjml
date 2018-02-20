@@ -1,0 +1,12 @@
+Neos:
+  Fusion:
+    defaultContext:
+      Mjml: 'PunktDe\Eel\Mjml\MjmlHelper'
+
+PunktDe:
+  Eel:
+    Mjml:
+      # Use the variable {PACKAGEROOT} for an absolute path to this package directory
+      mjmlBinPath: '{PACKAGEROOT}/Resources/Private/Library/node_modules/bin/mjml'
+
+

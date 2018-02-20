@@ -1,18 +1,18 @@
 {
-    "description": "",
+    "description": "Neos Package for compiling MJML markup",
     "type": "neos-package",
-    "name": "punktde/eel-mjml",
+    "name": "punktde/neos-mjml",
     "require": {
-        "neos/flow": "*"
+        "neos/neos": "*"
     },
     "autoload": {
         "psr-4": {
-            "PunktDe\\Eel\\Mjml\\": "Classes/"
+            "PunktDe\\Neos\\Mjml\\": "Classes/"
         }
     },
     "extra": {
         "neos": {
-            "package-key": "PunktDe.Eel.Mjml"
+            "package-key": "PunktDe.Neos.Mjml"
         }
     }
 }

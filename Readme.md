@@ -1,4 +1,4 @@
-# Neos Eel helper for compiling MJML markup
+# Neos Package for compiling MJML markup
 
 [MJML](https://mjml.io/) is a markup language to build responsive email templates by providing a semantic syntax and a rich standard component library. 
 
@@ -6,10 +6,10 @@
 
 **Install the package:**
 
-	composer require punktde/eel-mjml
+	composer require punktde/neos-mjml
 
 **Install / configure the MJML compiler**
 
 You can either install the mjml binary globally and configure its path in the `Settings.yaml` or install the binary locally with npm:
 
-	npm install --prefix Packages/Application/PunktDe.Eel.Mjml/Resources/Private/Library
+	npm install --prefix Packages/Application/PunktDe.Mjml/Resources/Private/Library

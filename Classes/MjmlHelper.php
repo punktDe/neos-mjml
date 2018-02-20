@@ -1,5 +1,5 @@
 <?php
-namespace PunktDe\Eel\Mjml;
+namespace PunktDe\Neos\Mjml;
 
 /*
  * This file is part of the PunktDe.Eel.Mjml package.

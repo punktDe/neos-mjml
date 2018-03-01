@@ -74,7 +74,7 @@ class MjmlHelper implements ProtectedContextAwareInterface
      */
     protected function getMjmlBinaryPath(): string
     {
-        $packageResourcePath = $this->packageManager->getPackage('PunktDe.Eel.Mjml')->getResourcesPath();
+        $packageResourcePath = $this->packageManager->getPackage('PunktDe.Neos.Mjml')->getResourcesPath();
 
         $mjmlBinPath = str_replace('{PACKAGERESOURCEROOT}', $packageResourcePath, $this->mjmlBinPath);
 

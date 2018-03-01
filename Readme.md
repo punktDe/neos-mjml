@@ -12,4 +12,4 @@
 
 You can either install the mjml binary globally and configure its path in the `Settings.yaml` or install the binary locally with npm:
 
-	npm install --prefix Packages/Application/PunktDe.Mjml/Resources/Private/Library
+	npm install --prefix Packages/Application/PunktDe.Neos.Mjml/Resources/Private/Library

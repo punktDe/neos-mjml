@@ -1,4 +1,5 @@
 <?php
+
 namespace PunktDe\Neos\Mjml;
 
 /*
@@ -11,8 +12,10 @@ namespace PunktDe\Neos\Mjml;
 
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Configuration\Exception\InvalidConfigurationException;
+use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\Exception;
 use Neos\Flow\Package\PackageManagerInterface;
+use Neos\Utility\Files;
 use Neos\Flow\Annotations as Flow;
 
 class MjmlHelper implements ProtectedContextAwareInterface
@@ -31,38 +34,32 @@ class MjmlHelper implements ProtectedContextAwareInterface
     protected $packageManager;
 
     /**
+     * @Flow\Inject
+     * @var Bootstrap
+     */
+    protected $bootstrap;
+
+
+    /**
      * @param string $mjmlSource
      * @return string
      * @throws Exception
      * @throws InvalidConfigurationException
+     * @throws \Neos\Utility\Exception\FilesException
      */
     public function compile(string $mjmlSource): string
     {
-        $descriptorspec = [
-            0 => ['pipe', 'r'],
-            1 => ['pipe', 'w'],
-            2 => ['pipe', 'w']
-        ];
+        $htmlFile = $this->createTemporaryFile('html');
+        $mjmlFile = $this->createTemporaryFile('mjml');
 
-        $process = proc_open($this->getMjmlBinaryPath() . ' -i -s', $descriptorspec, $pipes);
+        file_put_contents($mjmlFile, $mjmlSource);
 
-        if (!is_resource($process)) {
-            throw new Exception('Could not open the mjml proccess', 1519111810);
-        }
+        shell_exec(escapeshellarg($this->getMjmlBinaryPath()) . ' -r ' . escapeshellarg($mjmlFile) . ' -o ' . escapeshellarg($htmlFile));
 
-        fwrite($pipes[0], $mjmlSource);
-        fclose($pipes[0]);
+        $compiledHtml = file_get_contents($htmlFile);
 
-        $compiledHtml = stream_get_contents($pipes[1]);
-        fclose($pipes[1]);
-
-        $status = proc_close($process);
-
-        if($status !== 0) {
-            $errorMessage = stream_get_contents($pipes[2]);
-            fclose($pipes[2]);
-            throw new Exception(sprintf('The mjml process exited with an error %s and message "%s": ' , $status, $errorMessage), 1519112326);
-        }
+        Files::unlink($htmlFile);
+        Files::unlink($mjmlFile);
 
         return $compiledHtml;
     }
@@ -87,6 +84,24 @@ class MjmlHelper implements ProtectedContextAwareInterface
         }
 
         return $mjmlBinPath;
+    }
+
+
+    /**
+     * @param $prefix
+     * @return bool|string
+     * @throws \Neos\Utility\Exception\FilesException
+     */
+    protected function createTemporaryFile($prefix)
+    {
+        $items = [FLOW_PATH_TEMPORARY_BASE, $this->bootstrap->getContext(), 'Mjml'];
+        $path = Files::concatenatePaths($items);
+
+        Files::createDirectoryRecursively($path);
+
+        $temporaryFileName = tempnam($path, $prefix);
+
+        return $temporaryFileName;
     }
 
     /**

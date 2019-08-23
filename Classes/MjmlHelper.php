@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace PunktDe\Neos\Mjml;
 
@@ -14,7 +15,7 @@ use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Configuration\Exception\InvalidConfigurationException;
 use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\Exception;
-use Neos\Flow\Package\PackageManagerInterface;
+use Neos\Flow\Package\PackageManager;
 use Neos\Utility\Files;
 use Neos\Flow\Annotations as Flow;
 
@@ -29,7 +30,7 @@ class MjmlHelper implements ProtectedContextAwareInterface
 
     /**
      * @Flow\Inject
-     * @var PackageManagerInterface
+     * @var PackageManager
      */
     protected $packageManager;
 

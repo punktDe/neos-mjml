@@ -2,6 +2,7 @@
     "description": "Neos Package for compiling MJML markup",
     "type": "neos-package",
     "name": "punktde/neos-mjml",
+    "license": "MIT",
     "require": {
         "neos/neos": "*"
     },

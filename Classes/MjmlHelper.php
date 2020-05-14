@@ -15,9 +15,11 @@ use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Configuration\Exception\InvalidConfigurationException;
 use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\Exception;
+use Neos\Flow\Log\Utility\LogEnvironment;
 use Neos\Flow\Package\PackageManager;
 use Neos\Utility\Files;
 use Neos\Flow\Annotations as Flow;
+use Psr\Log\LoggerInterface;
 
 class MjmlHelper implements ProtectedContextAwareInterface
 {
@@ -40,6 +42,11 @@ class MjmlHelper implements ProtectedContextAwareInterface
      */
     protected $bootstrap;
 
+    /**
+     * @Flow\Inject
+     * @var LoggerInterface
+     */
+    protected $logger;
 
     /**
      * @param string $mjmlSource
@@ -55,7 +62,8 @@ class MjmlHelper implements ProtectedContextAwareInterface
 
         file_put_contents($mjmlFile, $mjmlSource);
 
-        shell_exec(escapeshellarg($this->getMjmlBinaryPath()) . ' -r ' . escapeshellarg($mjmlFile) . ' -o ' . escapeshellarg($htmlFile));
+        $return = shell_exec(escapeshellarg($this->getMjmlBinaryPath()) . ' -r ' . escapeshellarg($mjmlFile) . ' -o ' . escapeshellarg($htmlFile));
+        $this->logger->debug('Mjml Parser returned ' . $return, LogEnvironment::fromMethodName(__METHOD__));
 
         $compiledHtml = file_get_contents($htmlFile);
 
@@ -81,7 +89,7 @@ class MjmlHelper implements ProtectedContextAwareInterface
         }
 
         if (!is_executable($mjmlBinPath)) {
-            throw new Exception(sprintf('The mjml binary in the configured path "%s" is not executable', $mjmlBinPath), 1519111547);
+            chmod($mjmlBinPath, 0700);
         }
 
         return $mjmlBinPath;
@@ -93,16 +101,14 @@ class MjmlHelper implements ProtectedContextAwareInterface
      * @return bool|string
      * @throws \Neos\Utility\Exception\FilesException
      */
-    protected function createTemporaryFile($prefix)
+    protected function createTemporaryFile($prefix): string
     {
         $items = [FLOW_PATH_TEMPORARY_BASE, $this->bootstrap->getContext(), 'Mjml'];
         $path = Files::concatenatePaths($items);
 
         Files::createDirectoryRecursively($path);
 
-        $temporaryFileName = tempnam($path, $prefix);
-
-        return $temporaryFileName;
+        return tempnam($path, $prefix);
     }
 
     /**

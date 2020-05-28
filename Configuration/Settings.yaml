@@ -7,4 +7,4 @@ PunktDe:
   Neos:
     Mjml:
       # Use the variable {PACKAGERESOURCEROOT} for an absolute path to this package directory
-      mjmlBinPath: '{PACKAGERESOURCEROOT}Private/Library/node_modules/.bin/mjml'
+      mjmlBinPath: '{PACKAGERESOURCEROOT}Private/Library/node_modules/mjml/bin/mjml'

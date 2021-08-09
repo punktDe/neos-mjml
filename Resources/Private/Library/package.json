@@ -6,6 +6,6 @@
   "author": "Punkt.de",
   "license": "MIT",
   "dependencies": {
-    "mjml": "^4.6.3"
+    "mjml": "^4.10.0"
   }
 }
